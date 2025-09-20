@@ -125,9 +125,9 @@ void DelayIfBTN_Ms(uint32_t n){
 void ledWrite(uint8_t led, uint8_t state){
 	if(led>=0 && led<5){ // if LED exists
 		if(led==0){GPIO_WriteBit(GPIOD, GPIO_Pin_6, state);} // 1
-		else if(led==1){GPIO_WriteBit(GPIOC, GPIO_Pin_1, state);} // 2
-		else if(led==2){GPIO_WriteBit(GPIOC, GPIO_Pin_2, state);} // 3
-		else if(led==3){GPIO_WriteBit(GPIOC, GPIO_Pin_4, state);} // 4
+		else if(led==1){GPIO_WriteBit(GPIOC, GPIO_Pin_4, state);} // 4		
+		else if(led==2){GPIO_WriteBit(GPIOC, GPIO_Pin_1, state);} // 2
+		else if(led==3){GPIO_WriteBit(GPIOC, GPIO_Pin_2, state);} // 3
 		else if(led==4){GPIO_WriteBit(GPIOD, GPIO_Pin_4, state);} // 5
 	}
 }
@@ -366,16 +366,16 @@ int main(void) {
 			//ledWrite(0,1);
 		}		
 		else if(counter==2){
-			blink_string("SOS",4);
-			blink_string("SOS",3);
-			blink_string("SOS",2);			
-			blink_string("SOS",1);
+			blink_string("BALCCON",4);
+			blink_string("CHILICHIPS",3);
+			blink_string("RADIONA",2);			
+			blink_string("LUGONS",1);
 			blink_string("SOS",0);
 		}
 		else if(counter==3){
-			scrollText("RADIONA", ROW_DELAY_MS);  // Scroll text with a 200ms delay
+			scrollText("BALCCON", ROW_DELAY_MS);  // Scroll text with a 200ms delay
 			DelayIfBTN_Ms(LOOP_DELAY_MS);			
-		}
+		}	
 	}
 }
 
