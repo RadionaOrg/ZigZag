@@ -1,0 +1,8 @@
+{
+    "files.associations": {
+        "*.c_backup": "cpp",
+        "ch32v00x.h": "c",
+        "string.h": "c",
+        "ch32v00x_exti.h": "c"
+    }
+}
