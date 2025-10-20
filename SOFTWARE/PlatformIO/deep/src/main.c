@@ -39,7 +39,7 @@ void TIM2_IRQHandler(void) __attribute__((interrupt("WCH-Interrupt-fast")));
 //#define POV
 
 #define SYSCLK_FREQ_8MHz_HSI    8000000
-#define PFIC_SLEEPDEEP                          ((uint32_t)0x00000004) /* 1:deep sleep; 0:sleep */
+//#define PFIC_SLEEPDEEP                          ((uint32_t)0x00000004) /* 1:deep sleep; 0:sleep */
 
 #ifdef POV
 	#define ROW_DELAY_MS 30
@@ -110,6 +110,47 @@ volatile bool timer_wakeup = false;
 		// Dash (-)
 		{0x00, 0x00, 0x1F, 0x00, 0x00}   // -
 	};
+#endif
+
+#ifdef POV
+	void displayCharacter(char c, int scrollSpeed) {
+		int index;
+		
+		if (c >= 'A' && c <= 'Z') {
+			index = c - 'A';  // Map 'A' to index 0
+		} else if (c >= '0' && c <= '9') {
+			index = c - '0' + 26;  // Map '0' to index 26
+		} else if (c == '-') {
+			index = 36;  // Index for '-'
+		} else {
+			return;  // Invalid character, do nothing
+		}
+
+		for (int col = 0; col < 5; col++) {
+			uint8_t columnData = font_5x5[index][col];  // Get column bitmap
+			for (int row = 0; row < 5; row++) {
+				ledWrite(row, (columnData >> row) & 1);  // Set LEDs
+			}
+		Delay_Ms(ROW_DELAY_MS);  // Adjust for PoV effect
+		}
+
+			ledsOFF();
+			Delay_Ms(ROW_DELAY_MS);  // Adjust for PoV effect	
+	}
+#endif
+
+#ifdef POV
+	void scrollText(const char *text, int scrollSpeed) {
+		int len = strlen(text);
+
+		for (int i = 0; i < len; i++) {
+			displayCharacter(text[i], scrollSpeed);  // Use your existing function
+			DelayIfBTN_Ms(scrollSpeed);  // Adjust for PoV effect
+			if(!GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)){
+				break;
+			}
+		}
+	}
 #endif
 
 // Morse Code Dictionary (A-Z, 0-9)
@@ -300,47 +341,6 @@ void raider(void){
 		ledWrite(1,0);
 }
 
-#ifdef POV
-	void displayCharacter(char c, int scrollSpeed) {
-		int index;
-		
-		if (c >= 'A' && c <= 'Z') {
-			index = c - 'A';  // Map 'A' to index 0
-		} else if (c >= '0' && c <= '9') {
-			index = c - '0' + 26;  // Map '0' to index 26
-		} else if (c == '-') {
-			index = 36;  // Index for '-'
-		} else {
-			return;  // Invalid character, do nothing
-		}
-
-		for (int col = 0; col < 5; col++) {
-			uint8_t columnData = font_5x5[index][col];  // Get column bitmap
-			for (int row = 0; row < 5; row++) {
-				ledWrite(row, (columnData >> row) & 1);  // Set LEDs
-			}
-		Delay_Ms(ROW_DELAY_MS);  // Adjust for PoV effect
-		}
-
-			ledsOFF();
-			Delay_Ms(ROW_DELAY_MS);  // Adjust for PoV effect	
-	}
-#endif
-
-#ifdef POV
-	void scrollText(const char *text, int scrollSpeed) {
-		int len = strlen(text);
-
-		for (int i = 0; i < len; i++) {
-			displayCharacter(text[i], scrollSpeed);  // Use your existing function
-			DelayIfBTN_Ms(scrollSpeed);  // Adjust for PoV effect
-			if(!GPIO_ReadInputDataBit(GPIOA, GPIO_Pin_2)){
-				break;
-			}
-		}
-	}
-#endif
-
 void prepare_for_sleep(void)
 {
     // Disable peripheral clocks except GPIOA + AFIO
@@ -360,23 +360,24 @@ void prepare_for_sleep(void)
 
 void enter_deep_sleep_event(void)
 {
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
-    AFIO->PCFR1 |= (0b100 << 24);   // Disable both SWD and JTAG
-    RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, DISABLE);  // Optional power save
-	RCC->APB1PCENR |= RCC_PWREN;          // enable power module
+    //RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, ENABLE);
+    //AFIO->PCFR1 |= (0b100 << 24);   // Disable both SWD and JTAG
+    //RCC_APB2PeriphClockCmd(RCC_APB2Periph_AFIO, DISABLE);  // Optional power save
+	//RCC->APB1PCENR |= RCC_PWREN;          // enable power module
 	// select standby on power-down
-	PWR->CTLR |= PWR_CTLR_PDDS;
+	PWR->CTLR = PWR_CTLR_PDDS;
 
 	// peripheral interrupt controller send to deep sleep
 	PFIC->SCTLR |= (1 << 2);
-	PFIC->SCTLR |= PFIC_SLEEPDEEP;
+	//PFIC->SCTLR |= PFIC_SLEEPDEEP;
 	// enable power interface module clock
-	RCC->APB1PCENR |= RCC_APB1Periph_PWR;
+	//RCC->APB1PCENR |= RCC_APB1Periph_PWR;
 
 	// enable low speed oscillator (LSI)
-	RCC->RSTSCKR |= RCC_LSION;
-	while ((RCC->RSTSCKR & RCC_LSIRDY) == 0) {}
-    __WFI();
+	//RCC->RSTSCKR |= RCC_LSION;
+	//while ((RCC->RSTSCKR & RCC_LSIRDY) == 0) {}
+	//stop_timer();
+    __WFE();
 }
 
 /** Enable Interrupt falling edge A2*/
