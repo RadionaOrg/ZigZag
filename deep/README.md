@@ -1,4 +1,4 @@
-# RadionaOrg deep badge for deep
+# RadionaOrg deep badge for DEEP security conference
 
 ![deep](../DOCUMENTS/deep.png)
 
@@ -44,6 +44,14 @@ In this mode badge consumes around 1.2mA
 
 ![morse](../DOCUMENTS/morse.png)
 
+## LVL1
+
+First 3 LEDs are text messages 
+
+LED4 is holding KEY for decrypting LED5 message
+
+Bring solution back to Radiona add yourself to solvers and set LVL2 task!
+
 ## Thank you!
 
 Thank's for playing! We hope you like it!
@@ -55,3 +63,4 @@ Thank's for playing! We hope you like it!
 Big thanks to Olimex for all RVPC code examples...
 
 ### Badge solvers
+
