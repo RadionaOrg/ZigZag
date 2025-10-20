@@ -8,11 +8,17 @@ Put battery and you will see one LED slightly ON.
 
 There is 4 second programming delay, please wait 4 seconds and badge will start doing LED RAIDER.
 
+In this mode badge consumes around 1.6mA
+
+![raider](../DOCUMENTS/raider.png)
+
 ### Badge sleep
 
 Hold button for ~5s until you see all leds on, release button and badge will go to sleep.
 
 In sleep mode badge will consume around 80uA.
+
+![deep_sleep](../DOCUMENTS/deep_sleep.png)
 
 To go out of sleep just press button again.
 
@@ -33,6 +39,10 @@ Press the button and wait for next mode to start.
 It is human readable, but you can also use app, or write your own
 
 Each LED has it's own message.
+
+In this mode badge consumes around 1.2mA
+
+![morse](../DOCUMENTS/morse.png)
 
 ## Thank you!
 
