@@ -74,6 +74,20 @@ Boards ware then soldered in soldering oven.
 
 Code with task was written and loaded into the badge.
 
+### Code
+
+Platformio project that you can use is here: https://github.com/RadionaOrg/ZigZag/tree/main/SOFTWARE/PlatformIO/deep
+
+To make your custom code - open this folder in vscode, setup Platformio, and build...
+
+To show your own messages you need to make changes here:
+
+https://github.com/RadionaOrg/ZigZag/blob/main/SOFTWARE/PlatformIO/deep/src/main.c#L499
+
+For a programmer we are using WCH-LinkE - but there are projects that are using RP2040 or ESP32 as loader...
+
+https://www.olimex.com/Products/RISC-V/WCH/WCH-LinkE/
+
 ## Thank you!
 
 Thank's for playing! We hope you like it!
