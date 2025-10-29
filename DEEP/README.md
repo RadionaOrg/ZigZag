@@ -99,3 +99,5 @@ Thank's for playing! We hope you like it!
 Big thanks to Olimex for all RVPC code examples...
 
 ### Badge solvers
+
+28.10.2025. - minime
